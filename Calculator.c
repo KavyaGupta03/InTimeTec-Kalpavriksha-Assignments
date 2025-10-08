@@ -8,18 +8,34 @@ char op_Stack[MAX_SIZE];
 int oSt_top = -1;
 
 void pushVal(int x) {
+    if (vSt_top >= MAX_SIZE - 1) {
+        printf("Error: Value Stack Overflow !!!\n");
+        return;
+    }
     val_Stack[++vSt_top] = x;
 }
 
 int popVal() {
+    if (vSt_top < 0) {
+        printf("Error: Value Stack Underflow !!!\n");
+        return 0;
+    }
     return val_Stack[vSt_top--];
 }
 
 void pushOp(char c) {
+    if (oSt_top >= MAX_SIZE - 1) {
+        printf("Error: Operator Stack Overflow !!!\n");
+        return;
+    }
     op_Stack[++oSt_top] = c;
 }
 
 char popOp() {
+    if (oSt_top < 0) {
+        printf("Error: Operator Stack Underflow !!!\n");
+        return 0;
+    }
     return op_Stack[oSt_top--];
 }
 
@@ -87,9 +103,7 @@ int main() {
                 int a = popVal();
                 char o = popOp();
                 int r = apply(a, b, o);
-                if ((o == '/' && b == 0)) {
-                    return 0;
-                }
+
                 pushVal(r);
             }
             pushOp(exp[i]);
@@ -110,9 +124,7 @@ int main() {
         int a = popVal();
         char o = popOp();
         int r = apply(a, b, o);
-        if ((o == '/' && b == 0)) {
-            return 0;
-        }
+        
         pushVal(r);
     }
 
