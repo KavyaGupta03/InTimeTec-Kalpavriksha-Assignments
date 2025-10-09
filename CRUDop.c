@@ -123,18 +123,25 @@ int main() {
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
-        if (choice == 1) {
-            createUser();
-        } else if (choice == 2) {
-            readUsers();
-        } else if (choice == 3) {
-            updateUser();
-        } else if (choice == 4) {
-            deleteUser();
-        } else if (choice == 5) {
-            break;
-        } else {
-            printf("Wrong Choice, could you pls Try again.\n");
+        switch (choice) {
+            case 1:
+                createUser();
+                break;
+            case 2:
+                readUsers();
+                break;
+            case 3:
+                updateUser();
+                break;
+            case 4:
+                deleteUser();
+                break;
+            case 5:
+                printf("Thank You , Exiting you the Program !!!");
+                return 0;
+            default:
+                printf("Wrong Choice, could you pls Try again.\n");
+                break;
         }
     }
     return 0;
