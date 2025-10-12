@@ -10,6 +10,7 @@ int getTotal(int *marks);
 float getAverage(int totalMarks);
 char getGrade(float avgMarks);
 void printRollNosByRecursion(struct Student *students,int stIdx,int totalStudents);
+int isValidRollNo(struct Student *students,int rollNo,int idx);
 
 int main(){
     
@@ -20,7 +21,7 @@ int main(){
     struct Student students[totalStudents];
 
     for(int i=0;i<totalStudents;i++){
-        printf("Enter the student detail : ");
+        printf("Enter details for Student %d (RollNo Name Marks1 Marks2 Marks3): \n", i + 1);
         scanf("%d %s %d %d %d",
             &students[i].rollNo,
             students[i].name,
@@ -28,6 +29,14 @@ int main(){
             &students[i].marks[1],
             &students[i].marks[2]
         );
+
+        int isRollNoValid = isValidRollNo(students,students[i].rollNo,i);
+        int isMarksValid = (students[i].marks[0] >= 0 && students[i].marks[0] <= 100) && (students[i].marks[1] >= 0 && students[i].marks[1] <= 100) && (students[i].marks[2] >= 0 && students[i].marks[2] <= 100);
+        
+        if( !isRollNoValid || !isMarksValid){
+            printf("Invalid input for this student ! Please re-enter details.\n");
+            i--;
+        }
     }
 
     printf("-----Student's Performance Analyzer----- \n\n");
@@ -94,6 +103,18 @@ char getGrade(float avg){
         return 'F';
     }
     // Athrav , I have used if else over here rather Switch case because we cannot compare floating values in switch case in C
+}
+
+int isValidRollNo(struct Student *students,int rollNo,int idx){
+    if(rollNo <= 0){
+        return 0;
+    }
+    for(int i=0;i<idx;i++){
+        if(students[i].rollNo == rollNo){
+            return 0;
+        }
+    }
+    return 1;
 }
 
 void printRollNosByRecursion(struct Student *students,int stIdx,int totalStudents){
