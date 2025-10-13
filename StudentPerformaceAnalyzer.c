@@ -11,12 +11,18 @@ float getAverage(int totalMarks);
 char getGrade(float avgMarks);
 void printRollNosByRecursion(struct Student *students,int stIdx,int totalStudents);
 int isValidRollNo(struct Student *students,int rollNo,int idx);
+int isMarksValid(struct Student *students,int idx);
 
 int main(){
     
     int totalStudents=0;
     printf("Enter the total number of students : ");
     scanf("%d",&totalStudents);
+    
+    if (totalStudents <= 0) {
+    printf("Invalid number of students.\n");
+    return 0;
+    }
 
     struct Student students[totalStudents];
 
@@ -28,12 +34,9 @@ int main(){
             &students[i].marks[0],
             &students[i].marks[1],
             &students[i].marks[2]
-        );
-
-        int isRollNoValid = isValidRollNo(students,students[i].rollNo,i);
-        int isMarksValid = (students[i].marks[0] >= 0 && students[i].marks[0] <= 100) && (students[i].marks[1] >= 0 && students[i].marks[1] <= 100) && (students[i].marks[2] >= 0 && students[i].marks[2] <= 100);
+        ); 
         
-        if( !isRollNoValid || !isMarksValid){
+        if( !isValidRollNo(students,students[i].rollNo,i) || !isMarksValid(students,i) ){
             printf("Invalid input for this student ! Please re-enter details.\n");
             i--;
         }
@@ -111,6 +114,16 @@ int isValidRollNo(struct Student *students,int rollNo,int idx){
     }
     for(int i=0;i<idx;i++){
         if(students[i].rollNo == rollNo){
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int isMarksValid(struct Student *students,int idx){
+    int marksLength=sizeof(students[idx].marks)/sizeof(students[idx].marks[0]);
+    for(int i=0;i<marksLength;i++){
+        if(students[idx].marks[i] < 0 || students[idx].marks[i] > 100){
             return 0;
         }
     }
