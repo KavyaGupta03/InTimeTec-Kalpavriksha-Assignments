@@ -25,7 +25,7 @@ void clearInputBuffer() {
 }
 
 void printProduct(struct Product p) {
-    printf("ID: %d | Name: %s | Price: %.2f | Quantity: %d\n",
+    printf("Product ID: %d | Name: %s | Price: %.2f | Quantity: %d\n",
            p.prodId, p.prodName, p.prodPrice, p.prodQuantity);
 }
 
@@ -47,6 +47,20 @@ int findProductIndexById(struct Product *products, int totalProducts, int id) {
             return i;
     }
     return -1;
+}
+
+void searchProductByID(struct Product *products, int totalProducts){
+    int id=0;
+    printf("Enter Product ID to search : ");
+    scanf("%d",&id);
+    clearInputBuffer();
+    int index=findProductIndexById(products,totalProducts,id);
+    if(index != -1){
+        printf("Product found : ");
+        printProduct(products[index]);
+    }else{
+        printf("No product found !!");
+    }
 }
 
 void addNewProduct(struct Product **products, int *totalProducts, int *capacity) {
@@ -274,10 +288,11 @@ int main() {
         printf("1. Add New Product\n");
         printf("2. View All Products\n");
         printf("3. Update Quantity\n");
-        printf("4. Search Product by Name\n");
-        printf("5. Search Product by Price Range\n");
-        printf("6. Delete Product\n");
-        printf("7. Exit\n");
+        printf("4. Search Product by ID\n");
+        printf("5. Search Product by Name\n");
+        printf("6. Search Product by Price Range\n");
+        printf("7. Delete Product\n");
+        printf("8. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         
@@ -294,15 +309,18 @@ int main() {
                 updateQuantity(products, totalProducts);
                 break;
             case 4:
-                searchProductByName(products, totalProducts);
+                searchProductByID(products, totalProducts);
                 break;
             case 5:
-                searchByPriceRange(products, totalProducts);
+                searchProductByName(products, totalProducts);
                 break;
             case 6:
-                deleteProduct(products, &totalProducts);
+                searchByPriceRange(products, totalProducts);
                 break;
             case 7:
+                deleteProduct(products, &totalProducts);
+                break;
+            case 8:
                 free(products);
                 printf("Memory released successfully. Exiting the program...Thank You\n");
                 return 0;
