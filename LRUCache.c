@@ -34,6 +34,18 @@ void initMap() {
         map[i] = NULL;
 }
 
+void trim(char *str) {
+    int start = 0, end = strlen(str) - 1;
+
+    while (str[start] == ' ') start++;
+    while (end >= start && str[end] == ' ') end--;
+
+    int j = 0;
+    for (int i = start; i <= end; i++)
+        str[j++] = str[i];
+    str[j] = '\0';
+}
+
 queueNode* createQueueNode(int key, char *value) {
     queueNode *newNode = (queueNode *)malloc(sizeof(queueNode));
     newNode->key = key;
@@ -158,11 +170,11 @@ int main() {
     initMap();
     printf("Welcome to LRU Cache!\n");
     printf("Enter commands :\n\n");
-    while (1) {
 
+    while (1) {
         fgets(command, sizeof(command), stdin);
         command[strcspn(command, "\n")] = '\0';
-
+        trim(command);
         if (strncmp(command, "createCache", 11) == 0) {
             int size;
             sscanf(command, "createCache %d", &size);
@@ -174,20 +186,21 @@ int main() {
             initMap();
             front = rear = NULL;
             cacheSize = 0;
-        }else if (strncmp(command, "put", 3) == 0) {
+        } else if (strncmp(command, "put", 3) == 0) {
             int key;
             char value[100];
-            sscanf(command, "put %d %s", &key, value);
-            put(key, value);
-        }else if (strncmp(command, "get", 3) == 0) {
+            if (sscanf(command, "put %d %[^\n]", &key, value) >= 2) {
+                trim(value);
+                put(key, value);
+            }
+        } else if (strncmp(command, "get", 3) == 0) {
             int key;
             sscanf(command, "get %d", &key);
             printf("%s\n", get(key));
-        }else if (strncmp(command, "exit", 4) == 0) {
+        } else if (strncmp(command, "exit", 4) == 0) {
             printf("Exiting...\n");
             break;
         }
     }
     return 0;
 }
-
